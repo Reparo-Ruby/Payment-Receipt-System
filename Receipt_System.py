@@ -1,5 +1,6 @@
 import os
 import json
+from re import S
 
 def first_time_user():
 
@@ -14,7 +15,7 @@ def first_time_user():
     for_receipt.write(f"{store}")
     for_receipt.close()
 
-    stock = input("Do you want to ass")
+    does_employee_work_here()
 
 
 def add_employees():
@@ -28,9 +29,7 @@ def check_user():
 
     manager_exists = os.path.exists('management.txt')
     employees_exist = os.path.exists("employees.txt")
-
-    employees = add_employees
-    print(employees)
+    
 
     if manager_exists == False and employees_exist == False:
         first_time_user()
@@ -47,11 +46,11 @@ def does_employee_work_here(employee):
     readfile = file1.read()
     read_nextfile = file2.read()
     
-    if employee in readfile: 
+    if employee in readfile or employee in read_nextfile: 
         print("ACCESS GRANTED")
-        whats_next = input("What would you like to do next?")
+        whats_next = input("What would you like to do next?\n")
         if "stock" in whats_next:
-            take_stock()
+            stock_market()
         if "payment" in whats_next:
             receive_payments()    
     else: 
@@ -78,7 +77,7 @@ def log_employees(employee):
 
 def returning_user():
 
-    employees = input("Enter Your Name:") 
+    employees = input("Enter Your Name: ") 
     does_employee_work_here(employees)
 
 
@@ -86,14 +85,44 @@ def receive_payments():
     pass
 
 
-def take_stock(quantity,stock,price):
+def take_stock():
+   
+    what_item = input("what item would you like to see?\n")
+    with open('stock', 'w+') as stock:
+        details = stock.read()
+    if what_item in details:
+        print(f"You have {details['Quantity']} {what_item} left. ")
+    else:
+        print(f"{what_item} is not in the stores stock list.")    
+
+
+def add_stock(employee,file):
+
     details = {"Quantity": quantity,
           "stock": stock,
           "price": price }
-  
-    with open('convert.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(details))
-        pass
+
+    with open('stock', 'w+') as stock:
+        stock.write(json.dumps(details))
+    pass
+
+    stock = input("Name/Lable of the item\n")
+    quantity = input(f"How many {stock} are you adding?\n")
+
+    if employee in file: ##this is for the manager we will only check if the manager exists only she is allowed to change prices
+        price = input(f"Price of {stock}\nR ")
+
+
+def stock_market():
+
+    add_or_take = input("Do you want to do Stock Taking or Add Stock?")
+    if add_or_take.lower() == "stock taking": 
+        take_stock()
+    elif add_or_take.lower() == "add stock":
+        add_stock()    
+    
+    file1 = open("convert.txt", "r")
+    print(file1.read())
 
 
 def store():
