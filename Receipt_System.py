@@ -14,6 +14,8 @@ def first_time_user():
     for_receipt.write(f"{store}")
     for_receipt.close()
 
+    stock = input("Do you want to ass")
+
 
 def add_employees():
 
@@ -40,8 +42,10 @@ def check_user():
 def does_employee_work_here(employee):
     
     file1 = open("employees.txt", "r")
+    file2 = open("management.txt", "r")
     
     readfile = file1.read()
+    read_nextfile = file2.read()
     
     if employee in readfile: 
         print("ACCESS GRANTED")
