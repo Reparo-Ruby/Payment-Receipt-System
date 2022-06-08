@@ -102,9 +102,11 @@ def take_stock():
 
 def add_stock():
 
-    still_adding = input("Still adding?....\n")
-    while still_adding.upper() == "YES":
-        stock = input("Name/Lable of the item\n")
+    stock_number = int(input("How many items do you wanna add as stock?\n"))
+
+    for i in range(stock_number):
+
+        stock = input(f"Name/Lable of item {i+1}\n")
         quantity = input(f"How many {stock}'s are you adding?\n")
         price = input(f"Price of {stock}\nR ")
 
@@ -114,6 +116,8 @@ def add_stock():
 
         with open('stock.txt', 'w+') as stock:
             stock.write(json.dumps(details))
+
+    print("STOCK ADDED")        
 
 
 def stock_market():
@@ -127,8 +131,8 @@ def stock_market():
     elif add_or_take.lower() == "add stock":
         add_stock()    
     
-    file1 = open("store.txt", "r")
-    print(file1.read())
+    # file1 = open("store.txt", "r")
+    # print(file1.read())
 
 
 def store():
